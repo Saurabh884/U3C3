@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <style>
+       #navbar{
+        display: flex;
+        justify-content: space-between;
+      }
+      #user-detail{
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      #confirm{
+        margin-bottom: 10px;
+      }
+      #movie{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-template-rows: auto;
+        gap: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <h1>Checkout | Cost: 100/seat</h1>
+      <!-- Display the wallet amount here inside h1 tag with id as "wallet". Note only amount, no extra text. Like 500 not Rs 500 -->
+      <h1 id="wallet">0</h1>
+    </div>
+    <div id="user-detail">
+      <!-- input field to accept user name with id as "user_name"  -->
+      <!-- input field to accept number of seats with id as "number_of_seats"  -->
+      <!-- A submit button to confirm booking with id as "confirm"  -->
+      <input type="text" placeholder="Enter your name" id="user_name">
+      <input type="number" placeholder="Number of Seats" id="number_of_seats">
+      <button id="confirm" onclick="confirmTck()">Confirm</button>
+    </div>
+
+    <div id="movie">
+      <!-- Append the selected movie for booking here -->
+      <!-- movie should have title and image  -->
+      <!-- It should be the same movie you selected for booking  -->
+    </div>
+  </body>
+</html>
+<script>
+
+let walletAmount =localStorage.getItem("amount")|| 0;
+  let walletMoney = document.querySelector("#wallet");
+  walletMoney.innerText = Number(walletAmount);
+
+  let bookedData= JSON.parse(localStorage.getItem("movie")) || [];
+ append(bookedData);
+  function append(data){
+          data.map(function(elem){
+            let box = document.createElement("div");
+
+            let image = document.createElement("img");
+            image.src = elem.Poster;
+
+            let title = document.createElement("p");
+            title.innerText = elem.Title;
+
+
+            box.append(image,title);
+            document.querySelector("#movie").append(box);
+
+          })
+        }
+
+        function confirmTck(){
+          let seat = document.querySelector("#number_of_seats");
+          
+          if(Number(walletAmount)<=0)
+          {
+            alert( "Insufficient Balance!" );
+          }
+          else{
+            let balance = Number(walletAmount) -(100*(Number(seat)));
+           localStorage.setItem("amount",Number(balance));
+           alert("Booking Successfull!")
+           
+          }
+        }
+  </script>
